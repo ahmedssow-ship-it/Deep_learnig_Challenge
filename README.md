@@ -114,7 +114,7 @@ $y = log(1 + count)$
 
 The model was evaluated on the **validation set**.
 
-**Validation RMSE: 77**
+**Validation RMSE: < 80**
 
 Tip: The RMSE can be further reduced by improving **feature engineering**, using **time-based validation**, or applying **hyperparameter optimization**.
 
