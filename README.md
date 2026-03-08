@@ -86,9 +86,9 @@ Accurate predictions help to:
 
 4️⃣ **Logarithmic Transformation**
 
-\
+
 $y = log(1 + count)$
-\
+
 
 - Helps stabilize variance and improve model learning.
 
