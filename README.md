@@ -1,4 +1,4 @@
-# Deep Learning Challenge (Prediction)
+# Deep Learning Challenge (Regression Problem)
 
 ## Project Team
 
