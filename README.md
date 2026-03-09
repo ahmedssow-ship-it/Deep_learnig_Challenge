@@ -8,7 +8,7 @@
 | Members | Ahmed Souleymane Sow, Soukeye Touré |
 | Supervisor | Dr. Bousso and Tutor Diamweli |
 | Deadline | March 13, 2026 |
-| Contact | ahmed.s.sow@aims-senegal.org, soukeye.toure@aims-senegal.org |
+| Contact | ahmed.s.sow@aims-senegal.org|
 ---
 
 ## Project Description
