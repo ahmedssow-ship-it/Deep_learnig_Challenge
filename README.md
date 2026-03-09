@@ -1,4 +1,4 @@
-# Deep Learning Challenge (Regression Problem)
+# Deep Learning Challenge (Regression Problem: Bike SHARING DEMAND)
 
 ## Project Team
 
