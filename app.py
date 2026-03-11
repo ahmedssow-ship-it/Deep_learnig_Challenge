@@ -6,7 +6,7 @@ from sklearn.metrics import mean_squared_error
 import os
 
 # chemins
-TRUE_LABELS = "data/test_true_labels.csv"
+TRUE_LABELS = "Dataset/test_true_labels.csv"
 LEADERBOARD = "leaderboard.csv"
 
 st.title("🚲 Bike Sharing Challenge Leaderboard")
