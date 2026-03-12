@@ -1,5 +1,7 @@
 ﻿numpy
+altair
 pandas
 scikit-learn
 streamlit
 torch
+
