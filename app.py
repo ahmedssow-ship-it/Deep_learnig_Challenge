@@ -5,7 +5,7 @@ from sklearn.metrics import mean_squared_error
 import os
 
 # Configuration des fichiers
-TRUE_LABELS = "test_true_labels.csv"
+TRUE_LABELS = "Dataset/test_true_labels.csv"
 LEADERBOARD = "leaderboard.csv"
 
 st.set_page_config(page_title="Bike Sharing Challenge", layout="centered")
