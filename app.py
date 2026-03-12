@@ -3,6 +3,7 @@ import pandas as pd
 import numpy as np
 from sklearn.metrics import mean_squared_error
 import os
+from datetime import datetime
 
 # Configuration des fichiers
 TRUE_LABELS = "Dataset/test_true_labels.csv"
@@ -29,15 +30,15 @@ with st.sidebar:
 if submit_button and uploaded_file and team_name:
     submission = pd.read_csv(uploaded_file)
 
-    # Validation simple
     if "count" not in submission.columns:
         st.error("Le fichier doit contenir une colonne 'count'")
     elif len(submission) != len(true_df):
         st.error(f"Taille incorrecte : {len(submission)} lignes au lieu de {len(true_df)}")
     else:
-        # Calcul du score : RMSE
-        # Equation: $RMSE = \sqrt{\frac{1}{n} \sum_{i=1}^{n} (y_i - \hat{y}_i)^2}$
+        # Calcul du RMSE
         rmse = np.sqrt(mean_squared_error(true_df["count"], submission["count"]))
+        # Date et heure actuelle (format: YYYY-MM-DD HH:MM)
+        now = datetime.now().strftime("%Y-%m-%d %H:%M")
        
         st.balloons()
         st.success(f"Score calculé avec succès pour {team_name} !")
@@ -47,15 +48,22 @@ if submit_button and uploaded_file and team_name:
         if os.path.exists(LEADERBOARD):
             leaderboard = pd.read_csv(LEADERBOARD)
         else:
-            leaderboard = pd.DataFrame(columns=["team", "rmse"])
+            # Création avec la colonne de temps
+            leaderboard = pd.DataFrame(columns=["team", "rmse", "last_submission"])
 
-        # Logique : On ne garde que le MEILLEUR score par équipe
-        new_data = pd.DataFrame({"team": [team_name], "rmse": [rmse]})
+        # Nouvelle donnée
+        new_data = pd.DataFrame({
+            "team": [team_name],
+            "rmse": [rmse],
+            "last_submission": [now]
+        })
+       
         leaderboard = pd.concat([leaderboard, new_data], ignore_index=True)
        
-        # Garder le min par équipe et trier
-        leaderboard = leaderboard.groupby("team", as_index=False)["rmse"].min()
-        leaderboard = leaderboard.sort_values("rmse").reset_index(drop=True)
+        # LOGIQUE : On garde le meilleur score par équipe.
+        # Si scores égaux, on garde la soumission la plus récente.
+        leaderboard = leaderboard.sort_values(by=["rmse", "last_submission"], ascending=[True, False])
+        leaderboard = leaderboard.drop_duplicates(subset="team", keep="first")
        
         leaderboard.to_csv(LEADERBOARD, index=False)
 
@@ -65,11 +73,18 @@ st.subheader("🏆 Classement Actuel")
 if os.path.exists(LEADERBOARD):
     df_display = pd.read_csv(LEADERBOARD)
    
-    # Styliser le tableau
+    # Ajout automatique du Rang (1, 2, 3...)
+    df_display.insert(0, 'Rank', range(1, len(df_display) + 1))
+   
+    # Renommer les colonnes pour l'esthétique
+    df_display.columns = ["Rang", "Équipe", "RMSE", "Dernière Soumission"]
+
+    # Stylisation
     st.dataframe(
-        df_display.style.highlight_min(axis=0, color='lightgreen', subset=['rmse'])
-        .format({"rmse": "{:.4f}"}),
-        use_container_width=True
+        df_display.style.highlight_min(axis=0, color='lightgreen', subset=['RMSE'])
+        .format({"RMSE": "{:.4f}"}),
+        use_container_width=True,
+        hide_index=True # On cache l'index Pandas car on a notre colonne Rang
     )
 else:
     st.info("Aucune soumission pour le moment. Soyez les premiers !")
