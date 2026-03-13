@@ -73,18 +73,31 @@ st.subheader("🏆 Classement Actuel")
 if os.path.exists(LEADERBOARD):
     df_display = pd.read_csv(LEADERBOARD)
    
-    # Ajout automatique du Rang (1, 2, 3...)
-    df_display.insert(0, 'Rank', range(1, len(df_display) + 1))
+    # Sécurité : On vérifie si les colonnes attendues existent
+    # Si le fichier est ancien, on s'adapte
+    if "last_submission" not in df_display.columns:
+        df_display["last_submission"] = "Ancienne"
+
+    # Ajout du Rang
+    df_display = df_display.sort_values("rmse").reset_index(drop=True)
+    df_display.insert(0, 'Rang', range(1, len(df_display) + 1))
    
-    # Renommer les colonnes pour l'esthétique
-    df_display.columns = ["Rang", "Équipe", "RMSE", "Dernière Soumission"]
+    # Renommage sécurisé : on ne renomme que ce qui existe
+    columns_mapping = {
+        "Rang": "Rang",
+        "team": "Équipe",
+        "rmse": "RMSE",
+        "last_submission": "Dernière Soumission"
+    }
+    # On filtre le dictionnaire pour ne garder que les colonnes présentes dans le DF
+    df_display = df_display.rename(columns=columns_mapping)
 
     # Stylisation
     st.dataframe(
-        df_display.style.highlight_min(axis=0, color='lightgreen', subset=['RMSE'])
-        .format({"RMSE": "{:.4f}"}),
+        df_display.style.highlight_min(axis=0, color='lightgreen', subset=['RMSE'] if 'RMSE' in df_display.columns else [])
+        .format({"RMSE": "{:.4f}"} if 'RMSE' in df_display.columns else {}),
         use_container_width=True,
-        hide_index=True # On cache l'index Pandas car on a notre colonne Rang
+        hide_index=True
     )
 else:
     st.info("Aucune soumission pour le moment. Soyez les premiers !")
