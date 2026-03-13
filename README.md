@@ -175,4 +175,4 @@ bike_model_predict/
 ```
 
 ## Submision
-[![Streamlit App](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://deeplearnigchallenge-9shfqyiumwvcerzjwy6tvw.streamlit.app/)
+[![Streamlit App](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://deeplearnigchallenge-app.streamlit.app/)
