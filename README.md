@@ -180,4 +180,4 @@ bike_model_predict/
 
 ## Classement 
 
-![Leaderboard](images/leaderboard.png)
+![Leaderboard](Clas.png)
